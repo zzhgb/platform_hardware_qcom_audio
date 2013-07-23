@@ -428,6 +428,7 @@ public:
     friend class AudioHardwareALSA;
     AudioHardwareALSA* mParent;
 //XIAOMI_END
+    long mAvailInMs;
 protected:
     friend class AudioHardwareALSA;
 private:
