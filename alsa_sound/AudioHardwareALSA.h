@@ -53,9 +53,6 @@ extern "C" {
 #include <termios.h> /* POSIX terminal control definitions */
 
 #define A200_msg_Sync_Polling 0x80000000
-//#define BOTHER 0010000
-//#define TCGETS2		_IOR('T', 0x2A, struct termios2)
-//#define TCSETS2		_IOW('T', 0x2B, struct termios2)
 
 #define PRESET_BASE 0x80310000
 #define ES310_PRESET_HANDSET_INCALL_NB		    (PRESET_BASE)
@@ -157,6 +154,8 @@ class AudioHardwareALSA;
 #define VOIP_SAMPLING_RATE_8K 8000
 #define VOIP_SAMPLING_RATE_16K 16000
 #define VOIP_DEFAULT_CHANNEL_MODE  1
+#define VOIP_BUFFER_SIZE_8K    320
+#define VOIP_BUFFER_SIZE_16K   640
 #define VOIP_BUFFER_MAX_SIZE   VOIP_BUFFER_SIZE_16K
 #define VOIP_PLAYBACK_LATENCY      6400
 #define VOIP_RECORD_LATENCY        6400

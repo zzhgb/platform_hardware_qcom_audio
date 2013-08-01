@@ -2038,11 +2038,11 @@ char* ALSADevice::getUCMDevice(uint32_t devices, int input, char *rxDevice)
                     if (((rxDevice != NULL) &&
                         (!strncmp(rxDevice, SND_USE_CASE_DEV_SPEAKER,
                         (strlen(SND_USE_CASE_DEV_SPEAKER)+1))
-#ifdef SEPERATED_VOICE_SPEAKER
+/*#ifdef SEPERATED_VOICE_SPEAKER
                         || !strncmp(rxDevice, SND_USE_CASE_DEV_VOC_SPEAKER,
                         (strlen(SND_USE_CASE_DEV_VOC_SPEAKER)+1))
 #endif
-                        )) ||
+*/                        )) ||
                         ((rxDevice == NULL) &&
                         !strncmp(mCurRxUCMDevice, SND_USE_CASE_DEV_SPEAKER,
                         (strlen(SND_USE_CASE_DEV_SPEAKER)+1)))) {
@@ -2141,11 +2141,10 @@ char* ALSADevice::getUCMDevice(uint32_t devices, int input, char *rxDevice)
                 }
 #endif
                 else {
-                    if ((rxDevice != NULL) &&
-                        !strncmp(rxDevice, SND_USE_CASE_DEV_ANC_HANDSET,
-                            strlen(SND_USE_CASE_DEV_ANC_HANDSET) + 1)) {
-                        return strdup(SND_USE_CASE_DEV_AANC_LINE); /* AANC LINE TX */
-                    } else {
+                     if (mCallMode == AudioSystem::MODE_IN_CALL) {
+                        return strdup(SND_USE_CASE_DEV_VOC_LINE); /* VOICE BUILTIN-MIC TX */
+                      }
+                      else {
                         return strdup(SND_USE_CASE_DEV_LINE); /* BUILTIN-MIC TX */
                     }
                 }

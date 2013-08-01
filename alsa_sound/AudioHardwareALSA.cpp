@@ -356,6 +356,7 @@ AudioHardwareALSA::AudioHardwareALSA() :
         pthread_create(&CSDInitThread, NULL, CSDInitThreadWrapper, this);
         //csd_client_init();
     }
+//XIAOMI_END
     }
 //XIAOMI_START
     mLoopbackState = 0;
@@ -511,8 +512,7 @@ status_t AudioHardwareALSA::setMasterVolume(float volume)
 status_t AudioHardwareALSA::setMode(int mode)
 {
     status_t status = NO_ERROR;
-
-    ALOGV("%s() mode=%d mMode=%d", __func__, mode, mMode);
+    ALOGE("mMode:%d, mode:%d", mMode, mode);
 //XIAOMI_START
     if ((mMode == AUDIO_MODE_RINGTONE) &&
         (mode == AUDIO_MODE_NORMAL)) {
@@ -520,6 +520,8 @@ status_t AudioHardwareALSA::setMode(int mode)
         doRouting_Audience_Codec( 0, 0, false);
     }
 //XIAOMI_END
+
+    ALOGV("%s() mode=%d mMode=%d", __func__, mode, mMode);
 
     if (mode != mMode) {
         status = AudioHardwareBase::setMode(mode);
@@ -534,6 +536,7 @@ status_t AudioHardwareALSA::setMode(int mode)
         }
 //XIAOMI_END
     }
+
     if (mode == AUDIO_MODE_IN_CALL) {
 //XIAOMI_START
         if (mAudienceCmd == CMD_AUDIENCE_READY)
@@ -1205,6 +1208,9 @@ status_t AudioHardwareALSA::doRouting(int device)
              setInChannels(device);
              ALSAHandleList::iterator it = mDeviceList.end();
              it--;
+//XIAOMI_START
+             ALOGD("ALSADevice->route mode:%d, device:0x%x, enable:%d", newMode, device, true);
+//XIAOMI_END
              mALSADevice->route(&(*it), (uint32_t)device, newMode);
         }
     }
