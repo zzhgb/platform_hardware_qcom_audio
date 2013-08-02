@@ -3,11 +3,11 @@ ifeq ($(TARGET_QCOM_AUDIO_VARIANT),caf)
 
 MY_LOCAL_PATH := $(call my-dir)
 
-#ifeq ($(BOARD_USES_LEGACY_ALSA_AUDIO),true)
+ifeq ($(BOARD_USES_LEGACY_ALSA_AUDIO),true)
 include $(MY_LOCAL_PATH)/legacy/Android.mk
-#else
-#include $(MY_LOCAL_PATH)/hal/Android.mk
-#endif
+else
+include $(MY_LOCAL_PATH)/hal/Android.mk
+endif
 
 endif
 endif
