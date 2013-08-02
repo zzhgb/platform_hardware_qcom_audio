@@ -97,10 +97,6 @@ ifeq ($(BOARD_HAVE_NEW_QCOM_CSDCLIENT),true)
     common_cflags += -DNEW_CSDCLIENT
 endif
 
-ifeq ($(BOARD_HAVE_HTC_CSDCLIENT),true)
-    common_cflags += -DHTC_CSDCLIENT
-endif
-
 ifeq ($(TARGET_USES_QCOM_COMPRESSED_AUDIO),true)
     common_cflags += -DQCOM_COMPRESSED_AUDIO_ENABLED
 endif

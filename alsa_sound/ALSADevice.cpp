@@ -913,32 +913,19 @@ ROUTE:
         if (csd_enable_device == NULL) {
             ALOGE("csd_client_enable_device is NULL");
         } else {
-            int tmp_tx_id = tx_dev_id;
-            int tmp_rx_id = rx_dev_id;
-
-#ifdef HTC_CSDCLIENT
-            if (tx_dev_id == DEVICE_BT_SCO_TX_ACDB_ID)
-            {
-                tmp_tx_id = 1027;
-            }
-            if (rx_dev_id == DEVICE_BT_SCO_RX_ACDB_ID)
-            {
-                tmp_rx_id = 1127;
-            }
-#endif
             int adjustedFlags = adjustFlagsForCsd(mDevSettingsFlag,
                     mCurRxUCMDevice);
-            err = csd_enable_device(tmp_rx_id, tmp_tx_id, adjustedFlags);
+            err = csd_enable_device(rx_dev_id, tx_dev_id, adjustedFlags);
             if (err < 0)
             {
                 ALOGE("csd_client_disable_device failed, error %d", err);
             }
         }
+#endif
 //XIAOMI_START
         mParent->enableAudienceloopback(1);
 //XIAOMI_END
     }
-#endif
 #endif
 
 #ifdef USES_AUDIO_AMPLIFIER
