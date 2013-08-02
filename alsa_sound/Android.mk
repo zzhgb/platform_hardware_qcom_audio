@@ -97,14 +97,6 @@ ifeq ($(BOARD_HAVE_NEW_QCOM_CSDCLIENT),true)
     common_cflags += -DNEW_CSDCLIENT
 endif
 
-ifeq ($(BOARD_HAVE_AUDIENCE_ES325_2MIC),true)
-    common_cflags += -DUSE_ES325_2MIC
-endif
-
-ifeq ($(BOARD_HAVE_SAMSUNG_CSDCLIENT),true)
-    common_cflags += -DSAMSUNG_CSDCLIENT
-endif
-
 ifeq ($(BOARD_HAVE_HTC_CSDCLIENT),true)
     common_cflags += -DHTC_CSDCLIENT
 endif

@@ -720,9 +720,6 @@ ROUTE:
         if (csd_disable_device == NULL) {
             ALOGE("csd_client_disable_device is NULL");
         } else {
-#ifdef USE_ES325_2MIC
-            setMixerControl("ES325 2Mic Enable", 0, 0);
-#endif
             err = csd_disable_device();
             if (err < 0)
             {
@@ -919,19 +916,6 @@ ROUTE:
             int tmp_tx_id = tx_dev_id;
             int tmp_rx_id = rx_dev_id;
 
-#ifdef USE_ES325_2MIC
-            if (!strcmp(rxDevice, SND_USE_CASE_DEV_VOC_EARPIECE) ||
-                    !strcmp(rxDevice, SND_USE_CASE_DEV_VOC_EARPIECE_XGAIN) ||
-                    !strcmp(rxDevice, SND_USE_CASE_DEV_VOC_SPEAKER)) {
-                if (tx_dev_id == 4) {
-                    tmp_tx_id = 34;
-                    setMixerControl("VEQ Enable", 1, 0);
-                    setMixerControl("ES325 2Mic Enable", 1, 0);
-                } else {
-                    setMixerControl("ES325 2Mic Enable", 0, 0);
-                }
-            }
-#endif
 #ifdef HTC_CSDCLIENT
             if (tx_dev_id == DEVICE_BT_SCO_TX_ACDB_ID)
             {
@@ -3096,20 +3080,8 @@ void  ALSADevice::setCsdHandle(void* handle)
     csd_slow_talk = (int (*)(uint32_t, uint8_t))::dlsym(mcsd_handle,
                                                         "csd_client_slow_talk");
 #else
-    csd_start_voice = (int (*)())::dlsym(mcsd_handle,
-#ifdef SAMSUNG_CSDCLIENT
-            "csd_client_start_voice_og"
-#else
-            "csd_client_start_voice"
-#endif
-            );
-    csd_stop_voice = (int (*)())::dlsym(mcsd_handle,
-#ifdef SAMSUNG_CSDCLIENT
-            "csd_client_stop_voice_og"
-#else
-            "csd_client_stop_voice"
-#endif
-            );
+    csd_start_voice = (int (*)())::dlsym(mcsd_handle,"csd_client_start_voice");
+    csd_stop_voice = (int (*)())::dlsym(mcsd_handle,"csd_client_stop_voice");
     csd_volume = (int (*)(int))::dlsym(mcsd_handle,"csd_client_volume");
     csd_mic_mute = (int (*)(int))::dlsym(mcsd_handle,"csd_client_mic_mute");
     csd_wide_voice = (int (*)(uint8_t))::dlsym(mcsd_handle,"csd_client_wide_voice");
