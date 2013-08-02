@@ -89,10 +89,6 @@ ifeq ($(BOARD_AUDIO_CAF_LEGACY_INPUT_BUFFERSIZE),true)
     common_cflags += -DCAF_LEGACY_INPUT_BUFFER_SIZE
 endif
 
-ifeq ($(BOARD_HAVE_AUDIENCE_A2220),true)
-    common_cflags += -DUSE_A2220
-endif
-
 ifeq ($(BOARD_HAVE_DOCK_USBAUDIO),true)
     common_cflags += -DDOCK_USBAUDIO_ENABLED
 endif

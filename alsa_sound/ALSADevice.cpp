@@ -26,9 +26,6 @@
 #include "AudioHardwareALSA.h"
 #include <media/AudioRecord.h>
 #include <dlfcn.h>
-#ifdef USE_A2220
-#include <sound/a2220.h>
-#endif
 
 #ifdef USES_AUDIO_AMPLIFIER
 #include <audio_amplifier.h>
@@ -203,10 +200,6 @@ ALSADevice::ALSADevice(AudioHardwareALSA* parent) {
     mProxyParams.mProxyState = proxy_params::EProxyClosed;
     mProxyParams.mProxyPcmHandle = NULL;
 
-#ifdef USE_A2220
-    mA2220Fd = -1;
-    mA2220Mode = A2220_PATH_INCALL_RECEIVER_NSOFF;
-#endif
 //XIAOMI_START
     mPrevDevice = 0;
     mParent = parent;
@@ -250,35 +243,6 @@ static bool isPlatformFusion3() {
     else
         return false;
 }
-
-#ifdef USE_A2220
-int ALSADevice::setA2220Mode(int mode)
-{
-    Mutex::Autolock autoLock(mA2220Lock);
-    int rc = -1;
-
-    if (mA2220Mode != mode) {
-        if (mA2220Fd < 0) {
-            mA2220Fd = ::open("/dev/audience_a2220", O_RDWR);
-            if (!mA2220Fd) {
-                ALOGE("%s: unable to open a2220 device!", __func__);
-                return rc;
-            } else {
-                ALOGI("%s: device opened, fd=%d", __func__, mA2220Fd);
-            }
-        }
-
-        rc = ioctl(mA2220Fd, A2220_SET_CONFIG, mode);
-        if (rc < 0)
-            ALOGE("%s: ioctl failed, errno=%d", __func__, errno);
-        else {
-            mA2220Mode = mode;
-            ALOGD("%s: set mode=%d", __func__, mode);
-        }
-    }
-    return rc;
-}
-#endif
 
 static bool shouldUseHandsetAnc(int flags, int inChannels)
 {
@@ -991,19 +955,6 @@ ROUTE:
 //XIAOMI_END
     }
 #endif
-#endif
-
-#ifdef USE_A2220
-    ALOGI("a2220: txDevice=%s rxDevice=%s", txDevice, rxDevice);
-    if (rxDevice != NULL && txDevice != NULL &&
-            (!strcmp(txDevice, SND_USE_CASE_DEV_DUAL_MIC_ENDFIRE) ||
-            !strcmp(txDevice, SND_USE_CASE_DEV_DUAL_MIC_BROADSIDE)) &&
-            (!strcmp(rxDevice, SND_USE_CASE_DEV_VOC_EARPIECE) ||
-             !strcmp(rxDevice, SND_USE_CASE_DEV_VOC_EARPIECE_XGAIN))) {
-        setA2220Mode(A2220_PATH_INCALL_RECEIVER_NSON);
-    } else {
-        setA2220Mode(A2220_PATH_INCALL_RECEIVER_NSOFF);
-    }
 #endif
 
 #ifdef USES_AUDIO_AMPLIFIER
