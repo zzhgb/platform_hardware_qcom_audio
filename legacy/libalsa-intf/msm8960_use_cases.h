@@ -314,7 +314,8 @@ static card_mapping_t card_mapping_list[] = {
 #define SND_USE_CASE_DEV_VOIP_SPEAKER "Handfree VOIP VoiceProc"
 #define SND_USE_CASE_DEV_VOIP_LINE          "VOIP Line"
 #define SND_USE_CASE_DEV_VOIP_HANDSET       "VOIP Handset"
-
+#define SND_USE_CASE_DEV_VOC_LINE_BACK "Line BackMic Voice"
+#define SND_USE_CASE_DEV_LINE_MAIN "Line Main"
 #define SND_USE_CASE_MOD_PLAY_FM         "Play FM"
 #define SND_USE_CASE_MOD_CAPTURE_FM      "Capture FM"
 #define SND_USE_CASE_MOD_CAPTURE_LOWLATENCY_MUSIC     "Capture Lowlatency Music"

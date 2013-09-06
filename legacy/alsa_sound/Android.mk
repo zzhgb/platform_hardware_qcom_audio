@@ -48,6 +48,14 @@ ifeq ($(call is-board-platform,msm8974),true)
     common_cflags += -DTARGET_8974
 endif
 
+ifeq ($(TARGET_BOOTLOADER_BOARD_NAME),taurus)
+    common_cflags += -DTAURUS
+endif
+
+ifeq ($(TARGET_BOOTLOADER_BOARD_NAME),aries)
+    common_cflags += -DARIES
+endif
+
 ifneq ($(ALSA_DEFAULT_SAMPLE_RATE),)
     common_cflags += -DALSA_DEFAULT_SAMPLE_RATE=$(ALSA_DEFAULT_SAMPLE_RATE)
 endif

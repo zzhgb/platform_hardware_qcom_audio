@@ -1067,6 +1067,12 @@ status_t AudioHardwareALSA::doRouting(int device)
        newMode = AudioSystem::MODE_IN_CALL;
     }
     if (!isRouted) {
+#ifdef TAURUS
+        if (mMode == AudioSystem::MODE_IN_COMMUNICATION) {
+            ALOGE("MSM8960 - FENS enable");
+            mALSADevice->enableFENS(true);
+        }
+#endif
 #ifdef QCOM_USBAUDIO_ENABLED
         if(!(device & AudioSystem::DEVICE_OUT_ANLG_DOCK_HEADSET) &&
             !(device & AudioSystem::DEVICE_OUT_DGTL_DOCK_HEADSET) &&
