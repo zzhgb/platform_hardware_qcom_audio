@@ -832,27 +832,11 @@ ROUTE:
         }
     }
 #endif
-    for(ALSAUseCaseList::iterator it = mUseCaseList.begin(); it != mUseCaseList.end(); ++it) {
-        ALOGD("Route use case %s\n", it->useCase);
-        if ((use_case != NULL) && (strncmp(use_case, SND_USE_CASE_VERB_INACTIVE,
-            strlen(SND_USE_CASE_VERB_INACTIVE))) && (!strncmp(use_case, it->useCase, MAX_UC_LEN))) {
-            snd_use_case_set(handle->ucMgr, "_verb", it->useCase);
-        } else {
-            snd_use_case_set(handle->ucMgr, "_enamod", it->useCase);
-        }
-    }
-    if (!mUseCaseList.empty())
-        mUseCaseList.clear();
-    if (use_case != NULL) {
-        free(use_case);
-        use_case = NULL;
-    }
-#ifdef QCOM_FM_ENABLED
-    if (rxDevice != NULL) {
-        setFmVolume(mFmVolume);
-    }
-#endif
-    ALOGD("switchDevice: mCurTxUCMDevivce %s mCurRxDevDevice %s", mCurTxUCMDevice, mCurRxUCMDevice);
+
+        ALOGD("switchDevice: mCurTxUCMDevivce %s mCurRxDevDevice %s", mCurTxUCMDevice, mCurRxUCMDevice);
+        /* Enable the EC ref device before enabling the Rx/Tx devices */
+        /* Enabling the Rx/Tx devices is being happened while enabling _verb/_enamod usecases */
+
 #ifdef QCOM_ACDB_ENABLED
     if (((devices & AudioSystem::DEVICE_IN_BUILTIN_MIC) || (devices & AudioSystem::DEVICE_IN_BACK_MIC))
         && (mInChannels == 1)) {
@@ -883,6 +867,28 @@ ROUTE:
         }
     }
 #endif
+
+    for(ALSAUseCaseList::iterator it = mUseCaseList.begin(); it != mUseCaseList.end(); ++it) {
+        ALOGD("Route use case %s\n", it->useCase);
+        if ((use_case != NULL) && (strncmp(use_case, SND_USE_CASE_VERB_INACTIVE,
+            strlen(SND_USE_CASE_VERB_INACTIVE))) && (!strncmp(use_case, it->useCase, MAX_UC_LEN))) {
+            snd_use_case_set(handle->ucMgr, "_verb", it->useCase);
+        } else {
+            snd_use_case_set(handle->ucMgr, "_enamod", it->useCase);
+        }
+    }
+    if (!mUseCaseList.empty())
+        mUseCaseList.clear();
+    if (use_case != NULL) {
+        free(use_case);
+        use_case = NULL;
+    }
+#ifdef QCOM_FM_ENABLED
+    if (rxDevice != NULL) {
+        setFmVolume(mFmVolume);
+    }
+#endif
+
 #ifdef QCOM_CSDCLIENT_ENABLED
 //XIAOMI_START
     mParent->doRouting_Audience_Codec(mode, devices, true);
