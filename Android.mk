@@ -1,13 +1,11 @@
 ifneq ($(filter msm8960,$(TARGET_BOARD_PLATFORM)),)
-ifeq ($(TARGET_QCOM_AUDIO_VARIANT),caf)
 
-MY_LOCAL_PATH := $(call my-dir)
+AUDIO_HW_ROOT := $(call my-dir)
 
-ifeq ($(BOARD_USES_LEGACY_ALSA_AUDIO),true)
-include $(MY_LOCAL_PATH)/legacy/Android.mk
-else
-include $(MY_LOCAL_PATH)/hal/Android.mk
-endif
-
+ifeq ($(strip $(BOARD_USES_ALSA_AUDIO)),true)
+    include $(AUDIO_HW_ROOT)/alsa_sound/Android.mk
+    include $(AUDIO_HW_ROOT)/libalsa-intf/Android.mk
+    include $(AUDIO_HW_ROOT)/audiod/Android.mk
+    include $(AUDIO_HW_ROOT)/mm-audio/Android.mk
 endif
 endif
