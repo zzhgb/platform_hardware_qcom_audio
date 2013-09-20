@@ -1697,7 +1697,7 @@ audio_devices_t AudioPolicyManager::getDeviceForStrategy(routing_strategy strate
                 device2 = mAvailableOutputDevices & AUDIO_DEVICE_OUT_FM_TX;
             }
 #endif
-#ifdef QCOM_PROXY_DEVICE_ENABLED
+#ifdef QCOM_WFD_ENABLED
             if ((strategy != STRATEGY_SONIFICATION) && (device2 == AUDIO_DEVICE_NONE)) {
                 // no sonification on WFD sink
                 device2 = mAvailableOutputDevices & AUDIO_DEVICE_OUT_PROXY;
