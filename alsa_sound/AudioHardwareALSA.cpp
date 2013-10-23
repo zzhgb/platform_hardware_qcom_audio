@@ -333,7 +333,12 @@ AudioHardwareALSA::AudioHardwareALSA() :
             if (csd_client_init == NULL) {
                 ALOGE("csd_client_init is NULL");
             } else {
-                csd_client_init();
+                //XIAOMI_START
+                if (mFusion3Platform) {
+                    pthread_create(&CSDInitThread, NULL, CSDInitThreadWrapper, this);
+                    //csd_client_init();
+                }
+                //XIAOMI_END
             }
 
         }
@@ -351,12 +356,6 @@ AudioHardwareALSA::AudioHardwareALSA() :
         if (mAcdbHandle) {
             mUcMgr->acdb_handle = static_cast<void*> (mAcdbHandle);
         }
-//XIAOMI_START
-    if (mFusion3Platform) {
-        pthread_create(&CSDInitThread, NULL, CSDInitThreadWrapper, this);
-        //csd_client_init();
-    }
-//XIAOMI_END
     }
 //XIAOMI_START
     mLoopbackState = 0;
@@ -1036,7 +1035,7 @@ status_t AudioHardwareALSA::doRouting(int device)
     if(device)
         mALSADevice->mCurDevice = device;
     if ((device == AudioSystem::DEVICE_IN_VOICE_CALL)
-#if defined(QCOM_FM_ENABLED) || defined(STE_FM)
+#ifdef QCOM_FM_ENABLED
         || (device == AudioSystem::DEVICE_IN_FM_RX)
         || (device == AudioSystem::DEVICE_IN_FM_RX_A2DP)
 #endif
@@ -1795,9 +1794,6 @@ AudioHardwareALSA::openInputStream(uint32_t devices,
         if (status) *status = err;
         return in;
       } else {
-//XIAOMI_START
-WORKAROUND:
-//XIAOMI_END
         alsa_handle_t alsa_handle;
         unsigned long bufferSize = MIN_CAPTURE_BUFFER_SIZE_PER_CH;
 
@@ -1864,7 +1860,7 @@ WORKAROUND:
                         }
                     }
                 }
-#if defined(QCOM_FM_ENABLED) || defined(STE_FM)
+#ifdef QCOM_FM_ENABLED
             } else if((devices == AudioSystem::DEVICE_IN_FM_RX)) {
                 strlcpy(alsa_handle.useCase, SND_USE_CASE_MOD_CAPTURE_FM, sizeof(alsa_handle.useCase));
             } else if(devices == AudioSystem::DEVICE_IN_FM_RX_A2DP) {
@@ -1917,7 +1913,7 @@ WORKAROUND:
                         }
                     }
                 }
-#if defined(QCOM_FM_ENABLED) || defined(STE_FM)
+#ifdef QCOM_FM_ENABLED
             } else if(devices == AudioSystem::DEVICE_IN_FM_RX) {
                 strlcpy(alsa_handle.useCase, SND_USE_CASE_VERB_FM_REC, sizeof(alsa_handle.useCase));
             } else if (devices == AudioSystem::DEVICE_IN_FM_RX_A2DP) {
