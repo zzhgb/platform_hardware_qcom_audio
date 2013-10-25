@@ -1759,26 +1759,10 @@ char* ALSADevice::getUCMDevice(uint32_t devices, int input, char *rxDevice)
         } else if ((devices & AudioSystem::DEVICE_OUT_ANLG_DOCK_HEADSET ||
                     devices & AudioSystem::DEVICE_OUT_DGTL_DOCK_HEADSET) &&
                     devices & AudioSystem::DEVICE_OUT_SPEAKER) {
-#ifdef DOCK_USBAUDIO_ENABLED
-            if (mCallMode == AUDIO_MODE_RINGTONE) {
-                return strdup(SND_USE_CASE_DEV_SPEAKER); /* Voice SPEAKER RX */
-            } else {
-                return strdup(SND_USE_CASE_DEV_DOCK);
-            }
-#else
             return strdup(SND_USE_CASE_DEV_USB_PROXY_RX_SPEAKER); /* USB PROXY RX + SPEAKER */
-#endif
         } else if ((devices & AudioSystem::DEVICE_OUT_ANLG_DOCK_HEADSET) ||
                   (devices & AudioSystem::DEVICE_OUT_DGTL_DOCK_HEADSET)) {
-#ifdef DOCK_USBAUDIO_ENABLED
-            if (mCallMode == AUDIO_MODE_RINGTONE) {
-                return strdup(SND_USE_CASE_DEV_USB_PROXY_RX); /* PROXY RX */
-            } else {
-                return strdup(SND_USE_CASE_DEV_DOCK); /* Dock RX */
-            }
-#else
             return strdup(SND_USE_CASE_DEV_USB_PROXY_RX); /* PROXY RX */
-#endif
 #ifdef QCOM_PROXY_DEVICE_ENABLED
         } else if( (devices & AudioSystem::DEVICE_OUT_SPEAKER) &&
                    (devices & AudioSystem::DEVICE_OUT_PROXY) &&
